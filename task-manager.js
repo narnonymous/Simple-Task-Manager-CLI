@@ -1,5 +1,5 @@
-const readline = require('readline');
 const fs = require('fs');
+const readline = require('readline');
 
 const TASKS_FILE = 'tasks.json';
 
