@@ -1,61 +1,69 @@
-const readlineSync = require('readline-sync');
+const readline = require('readline');
 const fs = require('fs');
 
 const TASKS_FILE = 'tasks.json';
 
-// Load tasks from file or initialize empty array
 let tasks = [];
+
 try {
     tasks = JSON.parse(fs.readFileSync(TASKS_FILE));
 } catch (err) {
     console.log('Error loading tasks:', err.message);
 }
 
-// Main function to start the task manager
 function main() {
     console.log('Welcome to the Task Manager CLI!\n');
 
-    while (true) {
-        console.log('1. Add a new task');
-        console.log('2. View all tasks');
-        console.log('3. Quit');
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
 
-        const choice = readlineSync.question('Please enter your choice: ');
+    displayMenu(rl);
+}
 
+function displayMenu(rl) {
+    console.log('1. Add a new task');
+    console.log('2. View all tasks');
+    console.log('3. Quit');
+
+    rl.question('Please enter your choice: ', (choice) => {
         switch (choice) {
             case '1':
-                addTask();
+                addTask(rl);
                 break;
             case '2':
-                viewTasks();
+                viewTasks(rl);
                 break;
             case '3':
                 saveTasks();
                 console.log('Goodbye!');
-                return;
+                rl.close();
+                break;
             default:
                 console.log('Invalid choice. Please try again.\n');
+                displayMenu(rl);
         }
-    }
+    });
 }
 
-// Function to add a new task
-function addTask() {
-    const description = readlineSync.question('Enter task description: ');
+function addTask(rl) {
+    rl.question('Enter task description: ', (description) => {
+        const task = {
+            description: description,
+            completed: false
+        };
 
-    const task = {
-        description: description,
-        completed: false
-    };
-
-    tasks.push(task);
-    console.log('Task added successfully!\n');
+        tasks.push(task);
+        console.log('Task added successfully!\n');
+        displayMenu(rl);
+    });
 }
 
-// Function to view all tasks
-function viewTasks() {
+function viewTasks(rl) {
     if (tasks.length === 0) {
         console.log('No tasks found.\n');
+        displayMenu(rl);
         return;
     }
 
@@ -64,12 +72,11 @@ function viewTasks() {
         console.log(`${index + 1}. ${task.description} (${task.completed ? 'Complete' : 'Incomplete'})`);
     });
     console.log('');
+    displayMenu(rl);
 }
 
-// Function to save tasks to file
 function saveTasks() {
     fs.writeFileSync(TASKS_FILE, JSON.stringify(tasks, null, 2));
 }
 
-// Start the task manager
 main();
