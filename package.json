@@ -1,6 +1,6 @@
 {
     "name": "simple-task-manager-by-narnonymous",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A simple task manager CLI application",
     "main": "task-manager.js",
     "scripts": {
