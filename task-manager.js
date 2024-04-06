@@ -1,5 +1,4 @@
 const fs = require('fs');
-const readline = require('readline');
 
 const TASKS_FILE = 'tasks.json';
 
@@ -14,18 +13,19 @@ try {
 function main() {
     console.log('Welcome to the Task Manager CLI!\n');
 
+    displayMenu();
+}
+
+function displayMenu() {
+    console.log('1. Add a new task');
+    console.log('2. View all tasks');
+    console.log('3. Quit');
+
+    const readline = require('readline');
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
-
-    displayMenu(rl);
-}
-
-function displayMenu(rl) {
-    console.log('1. Add a new task');
-    console.log('2. View all tasks');
-    console.log('3. Quit');
 
     rl.question('Please enter your choice: ', (choice) => {
         switch (choice) {
@@ -42,13 +42,19 @@ function displayMenu(rl) {
                 break;
             default:
                 console.log('Invalid choice. Please try again.\n');
-                displayMenu(rl);
+                displayMenu();
         }
     });
 }
 
 function addTask(rl) {
-    rl.question('Enter task description: ', (description) => {
+    const readline = require('readline');
+    const taskDescription = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    taskDescription.question('Enter task description: ', (description) => {
         const task = {
             description: description,
             completed: false
@@ -56,14 +62,15 @@ function addTask(rl) {
 
         tasks.push(task);
         console.log('Task added successfully!\n');
-        displayMenu(rl);
+        taskDescription.close();
+        displayMenu();
     });
 }
 
-function viewTasks(rl) {
+function viewTasks() {
     if (tasks.length === 0) {
         console.log('No tasks found.\n');
-        displayMenu(rl);
+        displayMenu();
         return;
     }
 
@@ -72,7 +79,7 @@ function viewTasks(rl) {
         console.log(`${index + 1}. ${task.description} (${task.completed ? 'Complete' : 'Incomplete'})`);
     });
     console.log('');
-    displayMenu(rl);
+    displayMenu();
 }
 
 function saveTasks() {

@@ -1,14 +1,11 @@
 {
-    "name": "simple-task-manager-by-narnonymous",
-    "version": "1.0.2",
-    "description": "A simple task manager CLI application",
-    "main": "task-manager.js",
-    "scripts": {
-        "start": "node task-manager.js"
-    },
-    "author": "Your Name",
-    "license": "ISC",
-    "dependencies": {
-        "readline-sync": "^1.4.10"
-    }
+  "name": "simple-task-manager-by-narnonymous",
+  "version": "1.0.3",
+  "description": "A simple task manager CLI application",
+  "main": "task-manager.js",
+  "scripts": {
+    "start": "node task-manager.js"
+  },
+  "author": "Your Name",
+  "license": "ISC"
 }
